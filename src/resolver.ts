@@ -23,6 +23,15 @@ async function load(coconfigPath: string): Promise<[string, CoConfigFile]> {
 
 export async function resolveConfig(pkgPath: string, pkgValue?: any) {
   if (typeof pkgValue === 'string') {
+    if (!fs.existsSync(pkgValue)) {
+      // Perhaps this is a node module?
+      try {
+        const nodemodule = await load(pkgValue);
+        return nodemodule;
+      } catch (error) {
+        // Nope.
+      }
+    }
     assert(
       fs.existsSync(pkgValue),
       `coconfig: Cannot find ${pkgValue} as specified in ${pkgPath}/package.json`,
