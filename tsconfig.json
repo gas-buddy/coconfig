@@ -1,0 +1,28 @@
+{
+  "include": ["@types/**/*", "src/**/*", "__tests__/**/*", "__mocks__/**/*", "dotconfig.ts"],
+  "exclude": [
+    "node_modules",
+    "build",
+  ],
+  "ts-node": {
+    "transpileOnly": true,
+    "files": true
+  },
+  "compilerOptions": {
+    "lib": ["ES2022", "DOM"],
+    "module": "CommonJS",
+    "target": "ES2022",
+    "declaration": true,                      /* Generates corresponding '.d.ts' file. */
+    "sourceMap": true,                        /* Generates corresponding '.map' file. */
+    "outDir": "./build",                      /* Redirect output structure to the directory. */
+    "resolveJsonModule": true,
+    "incremental": true,                   /* Enable incremental compilation */
+    "isolatedModules": true, /* Transpile each file as a separate module (similar to 'ts.transpileModule'). */
+    "strict": true, /* Enable all strict type-checking options. */
+    "moduleResolution": "NodeNext", /* Specify module resolution strategy: 'node' (Node.js) or 'classic' (TypeScript pre-1.6). */
+    "baseUrl": "./src", /* Base directory to resolve non-absolute module names. */
+    "allowSyntheticDefaultImports": true, /* Allow default imports from modules with no default export. This does not affect code emit, just typechecking. */
+    "esModuleInterop": true, /* Enables emit interoperability between CommonJS and ES Modules via creation of namespace objects for all imports. Implies 'allowSyntheticDefaultImports'. */
+    "experimentalDecorators": true,        /* Enables experimental support for ES7 decorators. */
+  }
+}
