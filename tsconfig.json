@@ -1,5 +1,5 @@
 {
-  "include": ["@types/**/*", "src/**/*", "__tests__/**/*", "__mocks__/**/*", "dotconfig.ts"],
+  "include": ["@types/**/*", "src/**/*", "__tests__/**/*", "__mocks__/**/*", "coconfig.ts"],
   "exclude": [
     "node_modules",
     "build",

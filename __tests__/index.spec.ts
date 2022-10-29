@@ -1,16 +1,16 @@
 import path from 'path';
 import fs from 'fs';
-import runDotConfig from '../src/index';
+import runCoConfig from '../src/index';
 import { resolveConfig } from '../src/resolver';
 
 async function tryConfig(filename: string, lang: string) {
   // eslint-disable-next-line global-require, import/extensions, import/no-dynamic-require
   const packagePath = path.resolve(__dirname, 'fake/package.json');
-  const [dotconfigPath, jsConfig] = await resolveConfig(
+  const [coconfigPath, jsConfig] = await resolveConfig(
     packagePath,
     path.resolve(__dirname, filename),
   );
-  await runDotConfig(
+  await runCoConfig(
     {
       packagePath,
       packageJson: {
@@ -19,7 +19,7 @@ async function tryConfig(filename: string, lang: string) {
         readme: 'not bloody likely',
         _id: 'eh?',
       },
-      dotconfigPath,
+      coconfigPath,
       verifyGitIgnore: false,
     },
     jsConfig,
@@ -35,5 +35,5 @@ async function tryConfig(filename: string, lang: string) {
   expect(fs.existsSync(path.resolve(__dirname, 'fake', 'default'))).toBe(false);
 }
 
-test('Read a JS dotconfig', async () => tryConfig('./fake/dotconfig.js', 'js'));
-test('Read a TS dotconfig', async () => tryConfig('./fake/dotconfig.ts', 'ts'));
+test('Read a JS coconfig', async () => tryConfig('./fake/coconfig.js', 'js'));
+test('Read a TS coconfig', async () => tryConfig('./fake/coconfig.ts', 'ts'));

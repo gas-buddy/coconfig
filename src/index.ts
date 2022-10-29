@@ -3,14 +3,14 @@ import fs from 'fs';
 import path from 'path';
 import findUp from 'find-up';
 import dotgitignore from 'dotgitignore';
-import { DotConfigEnvironment, DotConfigExecutionFn, DotConfigFile } from './types/index';
+import { CoConfigEnvironment, CoConfigExecutionFn, CoConfigFile } from './types/index';
 import { getFile, headerMarker } from './passthrough';
 
-export default async function runDotConfig(env: DotConfigEnvironment, dotconfig: DotConfigFile) {
-  const configs = Object.entries(dotconfig);
+export default async function runCoConfig(env: CoConfigEnvironment, coconfig: CoConfigFile) {
+  const configs = Object.entries(coconfig);
   const filebase = path.dirname(env.packagePath);
 
-  async function resolveFilename(f: string | DotConfigExecutionFn) {
+  async function resolveFilename(f: string | CoConfigExecutionFn) {
     if (typeof f === 'string') {
       return path.resolve(filebase, f);
     }
@@ -37,7 +37,7 @@ export default async function runDotConfig(env: DotConfigEnvironment, dotconfig:
     if (content !== undefined && content !== existing) {
       if (checkFirst && existing && !existing.includes(headerMarker)) {
         console.warn(
-          `dotconfig: ${filename} already exists, but was not created by dotconfig. Skipping.`,
+          `coconfig: ${filename} already exists, but was not created by coconfig. Skipping.`,
         );
         return;
       }
@@ -48,14 +48,14 @@ export default async function runDotConfig(env: DotConfigEnvironment, dotconfig:
           if (env.modifyGitIgnore) {
             const rawFilePath = findUp.sync('.gitignore', { cwd: filebase }) || path.resolve(filebase, '.gitignore');
             let exIgnore = fs.readFileSync(rawFilePath || '', 'utf8').trimEnd();
-            if (!exIgnore.includes('# Added by dotconfig')) {
-              exIgnore = `${exIgnore}\n# Added by dotconfig`;
+            if (!exIgnore.includes('# Added by coconfig')) {
+              exIgnore = `${exIgnore}\n# Added by coconfig`;
             }
             const update = `${exIgnore}\n${path.relative(filebase, filename)}\n`;
             fs.writeFileSync(rawFilePath, update, { encoding: 'utf8' });
           } else {
             console.warn(
-              `dotconfig: ${path.relative(
+              `coconfig: ${path.relative(
                 filebase,
                 filename,
               )} is not ignored by .gitignore. Please add it to .gitignore since it is a generated file`,

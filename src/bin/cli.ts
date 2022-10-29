@@ -1,10 +1,10 @@
-// Run with yarn dlx dotconfig or npx dotconfig
+// Run with yarn dlx coconfig or npx coconfig
 import assert from 'assert';
 import minimist from 'minimist';
 import readPkgUp from 'read-pkg-up';
-import runDotConfig from '../index';
+import runCoConfig from '../index';
 import { resolveConfig } from '../resolver';
-import type { DotConfigEnvironment } from '../types/index';
+import type { CoConfigEnvironment } from '../types/index';
 
 const argv = minimist(process.argv.slice(2), {
   default: { gitignore: true, 'modify-git-ignore': true },
@@ -15,21 +15,21 @@ async function run() {
   const pkgInfo = readPkgUp.sync({ cwd: argv.cwd, normalize: argv.normalize });
   assert(pkgInfo, 'Cannot find package.json. Pass cwd option that points to a directory with a package.json');
   const { packageJson, path } = pkgInfo;
-  const [dotconfigPath, dotconfig] = await resolveConfig(path, packageJson.config?.dotconfig);
+  const [coconfigPath, coconfig] = await resolveConfig(path, packageJson.config?.coconfig);
 
-  const dotconfigEnv: DotConfigEnvironment = {
+  const coconfigEnv: CoConfigEnvironment = {
     packageJson,
     packagePath: path,
-    dotconfigPath,
+    coconfigPath,
     verifyGitIgnore: argv.gitignore,
     modifyGitIgnore: argv['modify-git-ignore'],
   };
 
-  let finalConfig = dotconfig;
-  if (typeof dotconfig === 'function') {
-    finalConfig = await dotconfig(dotconfigEnv);
+  let finalConfig = coconfig;
+  if (typeof coconfig === 'function') {
+    finalConfig = await coconfig(coconfigEnv);
   }
-  await runDotConfig(dotconfigEnv, finalConfig);
+  await runCoConfig(coconfigEnv, finalConfig);
 }
 
 run();

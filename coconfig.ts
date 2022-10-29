@@ -62,7 +62,9 @@ export default {
 coverage
 jest.config.js
 .eslintrc.js
-src/generated`,
+src/generated
+__tests__/snapshots
+__tests__/fake/coconfig.js`,
   },
   '.eslintrc.js': {
     configuration: () => ({
@@ -92,6 +94,6 @@ src/generated`,
           },
         },
       ],
-    }
-  }
+    },
+  },
 };

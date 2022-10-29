@@ -1,5 +1,5 @@
 {
-  "name": "dotconfig",
+  "name": "coconfig",
   "version": "0.1.0",
   "description": "Centralize your per-package rc, dotfile and config files into one extensible config file",
   "main": "build/index.js",
@@ -21,7 +21,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/gas-buddy/dotconfig.git"
+    "url": "git+https://github.com/gas-buddy/coconfig.git"
   },
   "keywords": [
     "typescript",
