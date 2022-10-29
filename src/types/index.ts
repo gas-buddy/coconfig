@@ -30,6 +30,11 @@ export interface CoConfigLiteralEntry extends CoConfigBaseEntry {
 // not execute top-level code in your coconfig, as it would run on every require of that file.
 export interface CoConfigPassthroughEntry extends CoConfigBaseEntry {
   configuration: () => any | Record<string, any>;
+  // If you want the function to run at "build time" and just render the json,
+  // set this value to true. This is commonly used for tsconfig.json, which
+  // is useful to keep as an object for upstream manipulation, but needs to be
+  // JSON in the end.
+  stringify?: boolean;
 }
 
 export type CoConfig = Record<string, string | CoConfigLiteralEntry | CoConfigPassthroughEntry>;

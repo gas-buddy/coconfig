@@ -87,6 +87,19 @@ export default async function runCoConfig(env: CoConfigEnvironment, coconfig: Co
         })
         .then(writeIfNecessary);
     }
+    if ('stringify' in entry && entry.stringify) {
+      return promise
+        .then(() => filenamePromise)
+        .then(async (filename) => {
+          const { configuration } = entry;
+          const jsObject = await configuration(env);
+          return writeIfNecessary({
+            filename,
+            content: JSON.stringify(jsObject, null, '  '),
+            encoding: 'utf8',
+          });
+        });
+    }
     return promise
       .then(() => filenamePromise)
       .then((filename) => writeIfNecessary({
