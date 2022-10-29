@@ -1,6 +1,6 @@
 {
   "name": "coconfig",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Centralize your per-package rc, dotfile and config files into one extensible config file",
   "main": "build/index.js",
   "types": "build/index.d.ts",
@@ -32,12 +32,12 @@
     "*.{js,jsx,ts,tsx}": "yarn eslint --cache --fix"
   },
   "devDependencies": {
-    "@types/jest": "^29.1.1",
+    "@types/jest": "^29.2.0",
     "@types/minimist": "^1.2.2",
-    "eslint": "^8.2.0",
-    "eslint-config-gasbuddy": "^7.0.2",
+    "eslint": "^8.26.0",
+    "eslint-config-gasbuddy": "^7.0.3",
     "husky": "^8.0.1",
-    "jest": "^29.1.2",
+    "jest": "^29.2.2",
     "jest-openapi": "^0.14.2",
     "lint-staged": "^13.0.3",
     "pinst": "^3.0.0",
@@ -47,9 +47,9 @@
   },
   "dependencies": {
     "dotgitignore": "^2.1.0",
-    "find-up": "^4",
+    "find-up": "^4.1.0",
     "minimist": "^1.2.7",
-    "read-pkg-up": "^7.0.0"
+    "read-pkg-up": "^7.0.1"
   },
   "optionalDependencies": {
     "ts-node": "^10.9.1"
