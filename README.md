@@ -1,6 +1,6 @@
 # coconfig
 
-![main CI](https://github.com/gas-buddy/coconfig/actions/workflows/nodejs.yml/badge.svg)
+![main CI](https://github.com/gas-buddy/coconfig/actions/workflows/npm_publish.yml/badge.svg)
 
 [![npm version](https://badge.fury.io/js/@gasbuddy%2Fcoconfig.svg)](https://badge.fury.io/js/@gasbuddy%2Fcoconfig)
 
@@ -21,7 +21,7 @@ tsconfig.build.json
 tsconfig.json
 ```
 
-10 files, not including .gitignore and package.json! And more importantly, 10 files that are the exact same across all our projects. And thus after some back and forth with @jasisk, coconfig was born. The format resembles most of those config files, with the idea of extension of other base configurations at the center, and using Javascript (or Typescript) and not json so you can write real code when necessary (and as some of the above configs require).
+10 files, not including .gitignore and package.json! And more importantly, 10 files that are the exact same across all our projects. And thus after some back and forth with [@jasisk](/jasisk), coconfig was born. The format resembles most of those config files, with the idea of extension of other base configurations at the center, and using Javascript (or Typescript) and not json so you can write real code when necessary (and as some of the above configs require).
 
 coconfig is intended to be a very lightweight module with minimal dependencies since it likely has to run with `npx` and/or `yarn dlx` and should thus be fast to download and run.
 
