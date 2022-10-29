@@ -1018,7 +1018,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*":
+"@types/node@npm:*, @types/node@npm:^18.11.7":
   version: 18.11.7
   resolution: "@types/node@npm:18.11.7"
   checksum: 69d630825cf6fbf580d08d76a4d4836ef8c34ed4fe0842221ade87d275f517099cbfabe8e22397208e564bd24926db97699ab9db5c091383269a432b336665e2
@@ -1816,6 +1816,7 @@ __metadata:
   dependencies:
     "@types/jest": ^29.2.0
     "@types/minimist": ^1.2.2
+    "@types/node": ^18.11.7
     dotgitignore: ^2.1.0
     eslint: ^8.26.0
     eslint-config-gasbuddy: ^7.0.3

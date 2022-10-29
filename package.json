@@ -1,6 +1,6 @@
 {
   "name": "coconfig",
-  "version": "0.3.1",
+  "version": "0.4.0",
   "description": "Centralize your per-package rc, dotfile and config files into one extensible config file",
   "main": "build/index.js",
   "types": "build/index.d.ts",
@@ -16,7 +16,7 @@
   },
   "bin": "build/bin/cli.js",
   "engines": {
-    "node": ">18.0.0"
+    "node": ">12.0.0"
   },
   "author": "GasBuddy Developers <developers@gasbuddy.com>",
   "license": "MIT",
@@ -34,6 +34,7 @@
   "devDependencies": {
     "@types/jest": "^29.2.0",
     "@types/minimist": "^1.2.2",
+    "@types/node": "^18.11.7",
     "eslint": "^8.26.0",
     "eslint-config-gasbuddy": "^7.0.3",
     "husky": "^8.0.1",
