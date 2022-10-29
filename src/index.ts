@@ -92,7 +92,7 @@ export default async function runCoConfig(env: CoConfigEnvironment, coconfig: Co
         .then(() => filenamePromise)
         .then(async (filename) => {
           const { configuration } = entry;
-          const jsObject = await configuration(env);
+          const jsObject = typeof configuration === 'function' ? (await configuration(env)) : configuration;
           return writeIfNecessary({
             filename,
             content: JSON.stringify(jsObject, null, '  '),
