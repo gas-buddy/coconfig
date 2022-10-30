@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 // Run with yarn dlx coconfig or npx coconfig
 import assert from 'assert';
 import minimist from 'minimist';
