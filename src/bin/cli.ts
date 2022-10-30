@@ -16,7 +16,8 @@ async function run() {
   const pkgInfo = readPkgUp.sync({ cwd: argv.cwd, normalize: argv.normalize });
   assert(pkgInfo, 'Cannot find package.json. Pass cwd option that points to a directory with a package.json');
   const { packageJson, path } = pkgInfo;
-  const [coconfigPath, coconfig] = await resolveConfig(path, packageJson.config?.coconfig);
+  const pkgValue = packageJson.config?.coconfig;
+  const { coconfigPath, config } = await resolveConfig(path, pkgValue);
 
   const coconfigEnv: CoConfigEnvironment = {
     packageJson,
@@ -26,9 +27,9 @@ async function run() {
     modifyGitIgnore: argv['modify-git-ignore'],
   };
 
-  let finalConfig = coconfig;
-  if (typeof coconfig === 'function') {
-    finalConfig = await coconfig(coconfigEnv);
+  let finalConfig = config;
+  if (typeof config === 'function') {
+    finalConfig = await config(coconfigEnv);
   }
   await runCoConfig(coconfigEnv, finalConfig);
 }

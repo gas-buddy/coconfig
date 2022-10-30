@@ -10,7 +10,7 @@ function clean(content: string) {
 async function tryConfig(filename: string, lang: string) {
   // eslint-disable-next-line global-require, import/extensions, import/no-dynamic-require
   const packagePath = path.resolve(__dirname, 'fake/package.json');
-  const [coconfigPath, jsConfig] = await resolveConfig(
+  const { coconfigPath, config: jsConfig } = await resolveConfig(
     packagePath,
     path.resolve(__dirname, filename),
   );

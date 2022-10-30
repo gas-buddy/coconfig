@@ -3,7 +3,7 @@ import path from 'path';
 import assert from 'assert';
 import { CoConfigFile } from './types/index';
 
-async function load(coconfigPath: string): Promise<[string, CoConfigFile]> {
+async function load(coconfigPath: string): Promise<{ coconfigPath: string, config: CoConfigFile }> {
   try {
     if (path.extname(coconfigPath) === '.ts') {
       // eslint-disable-next-line import/no-extraneous-dependencies, global-require
@@ -13,9 +13,9 @@ async function load(coconfigPath: string): Promise<[string, CoConfigFile]> {
     // eslint-disable-next-line import/no-dynamic-require, global-require
     const module = require(coconfigPath);
     if (Object.keys(module).length === 1 && module.default) {
-      return [coconfigPath, module.default];
+      return { coconfigPath, config: module.default };
     }
-    return [coconfigPath, module];
+    return { coconfigPath, config: module };
   } catch (error) {
     throw new Error(`coconfig: Cannot load ${coconfigPath}: ${(error as Error).message}`);
   }
