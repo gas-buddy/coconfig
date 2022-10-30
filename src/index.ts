@@ -68,11 +68,13 @@ export default async function runCoConfig(env: CoConfigEnvironment, coconfig: Co
 
   await configs.reduce((promise, [name, entry]) => {
     if (typeof entry === 'string') {
-      return promise.then(() => writeIfNecessary({
-        filename: name,
-        content: entry,
-        encoding: 'utf8',
-      }));
+      return promise
+        .then(() => resolveFilename(name))
+        .then((filename) => writeIfNecessary({
+          filename,
+          content: entry,
+          encoding: 'utf8',
+        }));
     }
     const filenamePromise = resolveFilename(entry.filename || name);
     if ('content' in entry) {

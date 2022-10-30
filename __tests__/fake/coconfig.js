@@ -6,6 +6,7 @@ module.exports = {
     content: `This is the fakeignore file
 It has some random lines`,
   },
+  '.justtext': 'this is just a string',
   'not-config': {
     filename: 'not-config.js',
     configuration() {

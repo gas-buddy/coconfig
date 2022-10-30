@@ -28,13 +28,13 @@ async function tryConfig(filename: string, lang: string) {
     },
     jsConfig,
   );
-  ['big-config.rc', 'not-config.js', '.fakeignore'].forEach((file) => {
+  ['big-config.rc', 'not-config.js', '.fakeignore', '.justtext'].forEach((file) => {
     const produced = path.resolve(__dirname, 'fake', file);
     expect(fs.existsSync(produced)).toBe(true);
     expect(clean(fs.readFileSync(produced, 'utf-8'))).toEqual(
       clean(fs.readFileSync(path.resolve(__dirname, 'snapshots', lang, file), 'utf-8')),
     );
-    fs.rmSync(produced);
+    //    fs.rmSync(produced);
   });
   expect(fs.existsSync(path.resolve(__dirname, 'fake', 'default'))).toBe(false);
 }
