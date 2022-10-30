@@ -34,7 +34,7 @@ export async function resolveConfig(pkgPath: string, pkgValue?: any) {
     }
     assert(
       fs.existsSync(pkgValue),
-      `coconfig: Cannot find ${pkgValue} as specified in ${pkgPath}/package.json`,
+      `coconfig: Cannot find ${pkgValue} as specified in ${pkgPath}`,
     );
     return load(pkgValue);
   }
