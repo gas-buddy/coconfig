@@ -110,3 +110,5 @@ export default async function runCoConfig(env: CoConfigEnvironment, coconfig: Co
       }));
   }, Promise.resolve());
 }
+
+export * from './types';
