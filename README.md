@@ -137,3 +137,16 @@ But this doesn't always work. yarn does not seem to allow transitive bin scripts
 ```
 
 * If you **do** need to modify the configuration, no big deal, just make a coconfig.js or coconfig.ts in your home directory, import or require the base configuration, make your modifications and export the result. Technically, you still don't need to depend on the shared configuration since yarn dlx will pull it in, but your linter might complain.
+
+* In general, it's probably better to use coconfig.js instead of coconfig.ts. We use coconfig to bootstrap the Typescript config itself, which means using Typescript without a config is subject to overal Typescript defaults. The most common problem in this case is synthetic default imports. If you want to use Typescript, look out for issues like this:
+
+```
+import config from './src';
+
+// During the initial creation of tsconfig. sythentic default imports are not allowed.
+// So we can handle both
+const tsconfig = config['tsconfig.json'] || (config as any).default['tsconfig.json'];
+tsconfig.configuration.compilerOptions.target = 'ES2019';
+
+export default config;
+```
