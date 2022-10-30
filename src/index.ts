@@ -47,7 +47,7 @@ export default async function runCoConfig(env: CoConfigEnvironment, coconfig: Co
         if (!gitignore.ignore(filename)) {
           if (env.modifyGitIgnore) {
             const rawFilePath = findUp.sync('.gitignore', { cwd: filebase }) || path.resolve(filebase, '.gitignore');
-            let exIgnore = fs.readFileSync(rawFilePath || '', 'utf8').trimEnd();
+            let exIgnore = fs.existsSync(rawFilePath) ? fs.readFileSync(rawFilePath || '', 'utf8').trimEnd() : '';
             if (!exIgnore.includes('# Added by coconfig')) {
               exIgnore = `${exIgnore}\n# Added by coconfig`;
             }

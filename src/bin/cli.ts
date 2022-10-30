@@ -7,8 +7,13 @@ import runCoConfig from '../index';
 import { resolveConfig } from '../resolver';
 import type { CoConfigEnvironment } from '../types/index';
 
+const isDev = (process.env.NODE_ENV || 'development') === 'development';
 const argv = minimist(process.argv.slice(2), {
-  default: { gitignore: true, 'modify-git-ignore': true },
+  default: {
+    // Don't check/modify in non-dev mode
+    gitignore: isDev,
+    'modify-git-ignore': isDev,
+  },
   boolean: ['normalize', 'gitignore', 'modify-git-ignore'],
 });
 
