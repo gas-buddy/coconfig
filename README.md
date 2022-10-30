@@ -100,3 +100,40 @@ src/generated`,
   },
 }
 ```
+
+# Shared coconfig
+The primary intent for coconfig is to share all these dotfile configurations across a set of projects. This can be done by creating a simple module that exports a coconfig. This works as expected, but a few tips to make things tidy:
+
+* It would be useful to offer the coconfig binary from your shared coconfig (let's say it's @myorg/coconfig)
+
+```
+{
+  "name": "@myorg/coconfig",
+  ...more stuff...
+  "bin": "coconfig",
+  "dependencies": {
+    "coconfig": "^1.0.0"
+    ...more stuff...
+  }
+}
+```
+
+But this doesn't always work. yarn does not seem to allow transitive bin scripts like this, and there are some reasonable reasons why. So instead, you can just use `yarn dlx -p` to install your shared configuration first. Doing it this way means you don't need to depend on your shared configuration in your app, which keeps your runtime node module footprint smaller.
+
+* In your dependent module package.json's, if you don't need to modify the configuration at all, just reference it, and add a postinstall entry to run coconfig:
+
+```
+{
+  "name": "myapp",
+  "scripts": {
+    ...more stuff...
+    "postinstall": "yarn dlx -p @myorg/coconfig -p coconfig coconfig"
+  }
+  "config": {
+    "coconfig": "@myorg/coconfig"
+  }
+  ...more stuff...
+}
+```
+
+* If you **do** need to modify the configuration, no big deal, just make a coconfig.js or coconfig.ts in your home directory, import or require the base configuration, make your modifications and export the result. Technically, you still don't need to depend on the shared configuration since yarn dlx will pull it in, but your linter might complain.
