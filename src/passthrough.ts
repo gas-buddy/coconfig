@@ -41,7 +41,7 @@ const config = require('${noExt}').default['${key}'].configuration;
 module.exports = typeof config === 'function' ? config() : config;\n`;
   }
   return `${header}
-const raw = require('${noExt}').default['${key}'].configuration;
+const raw = require('${noExt}')['${key}'].configuration;
 
 const config = typeof raw === 'function' ? raw() : raw;
 module.exports = config;\n`;
