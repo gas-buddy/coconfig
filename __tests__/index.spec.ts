@@ -34,7 +34,7 @@ async function tryConfig(filename: string, lang: string) {
     expect(clean(fs.readFileSync(produced, 'utf-8'))).toEqual(
       clean(fs.readFileSync(path.resolve(__dirname, 'snapshots', lang, file), 'utf-8')),
     );
-    //    fs.rmSync(produced);
+    fs.rmSync(produced);
   });
   expect(fs.existsSync(path.resolve(__dirname, 'fake', 'default'))).toBe(false);
 }
