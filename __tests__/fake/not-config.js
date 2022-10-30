@@ -3,7 +3,7 @@
  * Instead, edit the coconfig.js or coconfig.ts file in your project root.
  *
  * See https://github.com/gas-buddy/coconfig for more information.
- * @version coconfig@0.7.0
+ * @version coconfig@0.7.2
  */
 require('ts-node').register();
 const config = require('./coconfig').default['not-config'].configuration;

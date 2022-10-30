@@ -5,7 +5,7 @@
  * See https://github.com/gas-buddy/coconfig for more information.
  * @version coconfig@0.1.0
  */
-const raw = require('./coconfig').default['not-config'].configuration;
+const raw = require('./coconfig')['not-config'].configuration;
 
 const config = typeof raw === 'function' ? raw() : raw;
 module.exports = config;

@@ -104,21 +104,7 @@ src/generated`,
 # Shared coconfig
 The primary intent for coconfig is to share all these dotfile configurations across a set of projects. This can be done by creating a simple module that exports a coconfig. This works as expected, but a few tips to make things tidy:
 
-* It would be useful to offer the coconfig binary from your shared coconfig (let's say it's @myorg/coconfig)
-
-```
-{
-  "name": "@myorg/coconfig",
-  ...more stuff...
-  "bin": "coconfig",
-  "dependencies": {
-    "coconfig": "^1.0.0"
-    ...more stuff...
-  }
-}
-```
-
-But this doesn't always work. yarn does not seem to allow transitive bin scripts like this, and there are some reasonable reasons why. So instead, you can just use `yarn dlx -p` to install your shared configuration first. Doing it this way means you don't need to depend on your shared configuration in your app, which keeps your runtime node module footprint smaller.
+* In order to keep your runtime footprint as small as possible, your shared config should depend on coconfig as development dependency, and your "leaf node" package or app should ALSO do that. You will need a non-dev dependency on the shared config because of the way coconfig works - it requires the central configuration in the dependent config (like .eslintrc.js for example). Alternatively, you can write all your configs as pure string files, in which case you don't need anything at runtime, but you lose some of the power of downstream minor modifications of shared configuration.
 
 * In your dependent module package.json's, if you don't need to modify the configuration at all, just reference it, and add a postinstall entry to run coconfig:
 
@@ -136,7 +122,7 @@ But this doesn't always work. yarn does not seem to allow transitive bin scripts
 }
 ```
 
-* If you **do** need to modify the configuration, no big deal, just make a coconfig.js or coconfig.ts in your home directory, import or require the base configuration, make your modifications and export the result. Technically, you still don't need to depend on the shared configuration since yarn dlx will pull it in, but your linter might complain.
+* If you **do** need to modify the configuration, no big deal, just make a coconfig.js or coconfig.ts in your home directory, import or require the base configuration, make your modifications and export the result. Note that in both cases, you will need the runtime dependency AND the -p argument to download during postinstall. The issue is that yarn dlx modules can't see your modules (or I couldn't figure out how they can), so you need to make sure the module exists in both contexts.
 
 * In general, it's probably better to use coconfig.js instead of coconfig.ts. We use coconfig to bootstrap the Typescript config itself, which means using Typescript without a config is subject to overal Typescript defaults. The most common problem in this case is synthetic default imports. If you want to use Typescript, look out for issues like this:
 
