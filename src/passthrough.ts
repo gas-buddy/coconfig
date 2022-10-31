@@ -54,5 +54,5 @@ module.exports = resolved;\n`;
   return `${header}
 const configModule = require('${noExt}');
 ${commonCode}
-module.exports = config;\n`;
+module.exports = resolved;\n`;
 }
