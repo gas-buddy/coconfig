@@ -29,20 +29,30 @@ export function getFile(
 ) {
   const configRef = configReference(env.coconfigPath, env.packagePath);
   const noExt = configRef.startsWith('./') ? configRef.substring(0, configRef.length - path.extname(configRef).length) : configRef;
+
+  const commonCode = `
+const { configuration } = configModule['${key}'] || (configModule.default && configModule.default['${key}']);
+const resolved = typeof configuration === 'function' ? configuration() : configuration;
+`;
+
   if (path.extname(filename) === '.ts') {
-    return `${header}import { '${key}' as config } from '${noExt}';
-const resolved = typeof config === 'function' ? config() : config;
+    // Target is Typescript
+    return `${header}
+import configModule from '${noExt}';
+${commonCode}
 export default resolved;\n`;
   }
   if (path.extname(env.coconfigPath) === '.ts') {
+    // Target is JS, source is typescript (requires ts-node)
     return `${header}
 require('ts-node').register();
-const config = require('${noExt}').default['${key}'].configuration;
-module.exports = typeof config === 'function' ? config() : config;\n`;
+const configModule = require('${noExt}');
+${commonCode}
+module.exports = resolved;\n`;
   }
+  // Target is JS, source is JS
   return `${header}
-const raw = require('${noExt}')['${key}'].configuration;
-
-const config = typeof raw === 'function' ? raw() : raw;
+const configModule = require('${noExt}');
+${commonCode}
 module.exports = config;\n`;
 }

@@ -40,4 +40,4 @@ async function tryConfig(filename: string, lang: string) {
 }
 
 test('Read a JS coconfig', async () => tryConfig('./fake/coconfig.js', 'js'));
-test('Read a TS coconfig', async () => tryConfig('./fake/coconfig.ts', 'ts'));
+// test('Read a TS coconfig', async () => tryConfig('./fake/coconfig.ts', 'ts'));

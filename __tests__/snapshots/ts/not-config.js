@@ -3,8 +3,12 @@
  * Instead, edit the coconfig.js or coconfig.ts file in your project root.
  *
  * See https://github.com/gas-buddy/coconfig for more information.
- * @version coconfig@0.1.0
+ * @version coconfig@0.8.0
  */
 require('ts-node').register();
-const config = require('./coconfig').default['not-config'].configuration;
-module.exports = typeof config === 'function' ? config() : config;
+const configModule = require('./coconfig');
+
+const { configuration } = configModule['not-config'] || (configModule.default && configModule.default['not-config']);
+const resolved = typeof configuration === 'function' ? configuration() : configuration;
+
+module.exports = resolved;
