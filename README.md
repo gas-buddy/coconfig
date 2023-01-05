@@ -124,7 +124,7 @@ The primary intent for coconfig is to share all these dotfile configurations acr
 
 * If you **do** need to modify the configuration, no big deal, just make a coconfig.js or coconfig.ts in your home directory, import or require the base configuration, make your modifications and export the result. Note that in both cases, you will need the runtime dependency AND the -p argument to download during postinstall. The issue is that yarn dlx modules can't see your modules (or I couldn't figure out how they can), so you need to make sure the module exists in both contexts.
 
-* In general, it's probably better to use coconfig.js instead of coconfig.ts. We use coconfig to bootstrap the Typescript config itself, which means using Typescript without a config is subject to overal Typescript defaults. The most common problem in this case is synthetic default imports. If you want to use Typescript, look out for issues like this:
+* In general, it's probably better to use coconfig.js instead of coconfig.ts. We use coconfig to bootstrap the Typescript config itself, which means using Typescript without a config is subject to overall Typescript defaults. The most common problem in this case is synthetic default imports. If you want to use Typescript, look out for issues like this:
 
 ```
 import config from './src';
