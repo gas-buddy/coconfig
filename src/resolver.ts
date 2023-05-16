@@ -23,6 +23,9 @@ async function load(coconfigPath: string): Promise<{ coconfigPath: string, confi
 
 export async function resolveConfig(pkgPath: string, pkgValue?: any) {
   if (typeof pkgValue === 'string') {
+    if (pkgValue.startsWith('.')) {
+      return load(path.resolve(path.dirname(pkgPath), pkgValue));
+    }
     if (!fs.existsSync(pkgValue)) {
       // Perhaps this is a node module?
       try {
