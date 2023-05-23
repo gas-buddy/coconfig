@@ -12,8 +12,8 @@ async function load(coconfigPath: string): Promise<{ coconfigPath: string, confi
 
     // eslint-disable-next-line import/no-dynamic-require, global-require
     const module = require(coconfigPath);
-    if (Object.keys(module).length === 1 && module.default) {
-      return { coconfigPath, config: module.default };
+    if (Object.keys(module).length === 1 && (module.default || module.config)) {
+      return { coconfigPath, config: (module.default || module.config) };
     }
     return { coconfigPath, config: module };
   } catch (error) {
