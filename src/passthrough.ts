@@ -31,7 +31,8 @@ export function getFile(
   const noExt = configRef.startsWith('./') ? configRef.substring(0, configRef.length - path.extname(configRef).length) : configRef;
 
   const commonCode = `
-const { configuration } = configModule['${key}'] || (configModule.default && configModule.default['${key}']);
+const configItem = configModule.default || configModule.config || configModule;
+const { configuration } = configItem && configItem['${key}'];
 const resolved = typeof configuration === 'function' ? configuration() : configuration;
 `;
 

@@ -8,7 +8,8 @@
 require('ts-node').register();
 const configModule = require('./coconfig');
 
-const { configuration } = configModule['not-config'] || (configModule.default && configModule.default['not-config']);
+const configItem = configModule.default || configModule.config || configModule;
+const { configuration } = configItem && configItem['not-config'];
 const resolved = typeof configuration === 'function' ? configuration() : configuration;
 
 module.exports = resolved;
