@@ -22,13 +22,21 @@ function configReference(pathOrModule: string, packagePath: string) {
   return pathOrModule;
 }
 
+function getModulePath(configRef: string) {
+  // cjs needs full path
+  if (configRef.startsWith('./') && path.extname(configRef).length === 3) {
+    return configRef.substring(0, configRef.length - path.extname(configRef).length);
+  }
+  return configRef;
+}
+
 export function getFile(
   env: CoConfigEnvironment,
   key: string,
   filename: string,
 ) {
   const configRef = configReference(env.coconfigPath, env.packagePath);
-  const noExt = configRef.startsWith('./') ? configRef.substring(0, configRef.length - path.extname(configRef).length) : configRef;
+  const modulePath = getModulePath(configRef);
 
   const commonCode = `
 const configItem = configModule.default || configModule.config || configModule;
@@ -39,7 +47,7 @@ const resolved = typeof configuration === 'function' ? configuration() : configu
   if (path.extname(filename) === '.ts') {
     // Target is Typescript
     return `${header}
-import configModule from '${noExt}';
+import configModule from '${modulePath}';
 ${commonCode}
 export default resolved;\n`;
   }
@@ -47,13 +55,13 @@ export default resolved;\n`;
     // Target is JS, source is typescript (requires ts-node)
     return `${header}
 require('ts-node').register();
-const configModule = require('${noExt}');
+const configModule = require('${modulePath}');
 ${commonCode}
 module.exports = resolved;\n`;
   }
   // Target is JS, source is JS
   return `${header}
-const configModule = require('${noExt}');
+const configModule = require('${modulePath}');
 ${commonCode}
 module.exports = resolved;\n`;
 }
