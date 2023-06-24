@@ -3,7 +3,22 @@ import path from 'path';
 import assert from 'assert';
 import { CoConfigFile } from './types/index';
 
-async function load(coconfigPath: string): Promise<{ coconfigPath: string, config: CoConfigFile }> {
+function getExport(module: Record<string, unknown>) {
+  if (Object.keys(module).length === 1 && (module.default || module.config)) {
+    return module.default || module.config;
+  }
+  if (
+    Object.keys(module).length === 2
+    && module.default
+    && module.config
+    && module.default === module.config
+  ) {
+    return module.default;
+  }
+  return module;
+}
+
+async function load(coconfigPath: string): Promise<{ coconfigPath: string; config: CoConfigFile }> {
   try {
     if (path.extname(coconfigPath) === '.ts') {
       // eslint-disable-next-line import/no-extraneous-dependencies, global-require
@@ -12,10 +27,7 @@ async function load(coconfigPath: string): Promise<{ coconfigPath: string, confi
 
     // eslint-disable-next-line import/no-dynamic-require, global-require
     const module = require(coconfigPath);
-    if (Object.keys(module).length === 1 && (module.default || module.config)) {
-      return { coconfigPath, config: (module.default || module.config) };
-    }
-    return { coconfigPath, config: module };
+    return { coconfigPath, config: getExport(module) as CoConfigFile };
   } catch (error) {
     throw new Error(`coconfig: Cannot load ${coconfigPath}: ${(error as Error).message}`);
   }
@@ -35,10 +47,7 @@ export async function resolveConfig(pkgPath: string, pkgValue?: any) {
         // Nope.
       }
     }
-    assert(
-      fs.existsSync(pkgValue),
-      `coconfig: Cannot find ${pkgValue} as specified in ${pkgPath}`,
-    );
+    assert(fs.existsSync(pkgValue), `coconfig: Cannot find ${pkgValue} as specified in ${pkgPath}`);
     return load(pkgValue);
   }
   const pkgDir = path.dirname(pkgPath);
