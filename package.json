@@ -1,6 +1,6 @@
 {
   "name": "coconfig",
-  "version": "0.12.1",
+  "version": "0.12.2",
   "description": "Centralize your per-package rc, dotfile and config files into one extensible config file",
   "main": "build/index.js",
   "types": "build/index.d.ts",
@@ -49,6 +49,7 @@
   "dependencies": {
     "dotgitignore": "^2.1.0",
     "find-up": "^4.1.0",
+    "make-dir": "^4.0.0",
     "minimist": "^1.2.7",
     "read-pkg-up": "^7.0.1"
   },

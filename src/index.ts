@@ -2,6 +2,7 @@
 import fs from 'fs';
 import path from 'path';
 import findUp from 'find-up';
+import makeDir from 'make-dir';
 import dotgitignore from 'dotgitignore';
 import { CoConfigEnvironment, CoConfigExecutionFn, CoConfigFile } from './types/index';
 import { getFile, headerMarker } from './passthrough';
@@ -41,6 +42,7 @@ export default async function runCoConfig(env: CoConfigEnvironment, coconfig: Co
         );
         return;
       }
+      makeDir.sync(path.dirname(filename));
       await fs.promises.writeFile(filename, content, { encoding });
       if (env.verifyGitIgnore) {
         gitignore = gitignore || dotgitignore();
