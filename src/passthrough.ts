@@ -52,6 +52,7 @@ import * as esmToCjs from '${modulePath}';
 
 const configModule = cjs || esmToCjs;;
 ${commonCode}
+// eslint-disable-next-line import/no-default-export
 export default resolved;\n`;
   }
   if (path.extname(env.coconfigPath) === '.ts') {
