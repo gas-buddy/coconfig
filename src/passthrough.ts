@@ -50,7 +50,7 @@ const resolved = typeof configuration === 'function' ? configuration() : configu
 import cjs from '${modulePath}';
 import * as esmToCjs from '${modulePath}';
 
-const config = cjs || esmToCjs;;
+const configModule = cjs || esmToCjs;;
 ${commonCode}
 export default resolved;\n`;
   }
