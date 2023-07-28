@@ -47,7 +47,10 @@ const resolved = typeof configuration === 'function' ? configuration() : configu
   if (path.extname(filename) === '.ts') {
     // Target is Typescript
     return `${header}
-import configModule from '${modulePath}';
+import cjs from '${modulePath}';
+import * as esmToCjs from '${modulePath}';
+
+const config = cjs || esmToCjs;;
 ${commonCode}
 export default resolved;\n`;
   }
