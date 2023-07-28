@@ -50,7 +50,8 @@ const resolved = typeof configuration === 'function' ? configuration() : configu
 import cjs from '${modulePath}';
 import * as esmToCjs from '${modulePath}';
 
-const configModule = cjs || esmToCjs;;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const configModule: any = cjs || esmToCjs;
 ${commonCode}
 // eslint-disable-next-line import/no-default-export
 export default resolved;\n`;

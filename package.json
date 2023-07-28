@@ -1,6 +1,6 @@
 {
   "name": "coconfig",
-  "version": "0.13.2",
+  "version": "0.13.3",
   "description": "Centralize your per-package rc, dotfile and config files into one extensible config file",
   "main": "build/index.js",
   "types": "build/index.d.ts",
