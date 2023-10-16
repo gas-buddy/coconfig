@@ -39,6 +39,10 @@ export async function resolveConfig(pkgPath: string, pkgValue?: any) {
       return load(path.resolve(path.dirname(pkgPath), pkgValue));
     }
     if (!fs.existsSync(pkgValue)) {
+      // By default, npx/yarn dlx does not have access to the running package's node_modules,
+      // but we need that so that we don't have to be a runtime dep, but can work in runtime
+      // build scripts (after dev packages have been removed).
+      module.paths.push(path.resolve(path.dirname(pkgPath), 'node_modules'));
       // Perhaps this is a node module?
       try {
         const nodemodule = await load(pkgValue);
