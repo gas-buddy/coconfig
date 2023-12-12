@@ -21,6 +21,10 @@ function getExport(module: Record<string, unknown>) {
   return module;
 }
 
+/**
+ * Try and dynamically load a coconfig file in a variety of
+ * environments - esm, cjs, ts, js, cjs esm, etc.
+ */
 async function load(coconfigPath: string): Promise<{ coconfigPath: string; config: CoConfigFile }> {
   try {
     if (path.extname(coconfigPath) === '.ts') {
@@ -45,7 +49,7 @@ async function load(coconfigPath: string): Promise<{ coconfigPath: string; confi
   }
 }
 
-export async function resolveConfig(pkgPath: string, pkgValue?: any) {
+export async function resolveConfig(pkgPath: string, pkgValue?: string) {
   if (typeof pkgValue === 'string') {
     if (pkgValue.startsWith('.')) {
       return load(path.resolve(path.dirname(pkgPath), pkgValue));

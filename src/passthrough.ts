@@ -30,13 +30,13 @@ function getModulePath(configRef: string) {
   return configRef;
 }
 
-export function getFile(
-  env: CoConfigEnvironment,
-  key: string,
-  filename: string,
-) {
+export function getFile(env: CoConfigEnvironment, key: string, filename: string) {
   const configRef = configReference(env.coconfigPath, env.packagePath);
-  const modulePath = getModulePath(configRef);
+  const isModule = env.packageJson?.type === 'module' || /.m[jt]s/.test(path.extname(filename));
+
+  const modulePath = isModule ? configRef : getModulePath(configRef);
+
+  const isTs = /\.[mc]?ts/.test(path.extname(filename));
 
   const commonCode = `
 const configItem = configModule.default || configModule.config || configModule;
@@ -44,8 +44,7 @@ const { configuration } = configItem && configItem['${key}'];
 const resolved = typeof configuration === 'function' ? configuration() : configuration;
 `;
 
-  if (path.extname(filename) === '.ts') {
-    // Target is Typescript
+  if (isModule && isTs) {
     return `${header}
 import cjs from '${modulePath}';
 import * as esmToCjs from '${modulePath}';
@@ -56,6 +55,18 @@ ${commonCode}
 // eslint-disable-next-line import/no-default-export
 export default resolved;\n`;
   }
+
+  if (isModule) {
+    return `${header}
+import cjs from '${modulePath}';
+import * as esmToCjs from '${modulePath}';
+
+const configModule = cjs || esmToCjs;
+${commonCode}
+// eslint-disable-next-line import/no-default-export
+export default resolved;\n`;
+  }
+
   if (path.extname(env.coconfigPath) === '.ts') {
     // Target is JS, source is typescript (requires ts-node)
     return `${header}
