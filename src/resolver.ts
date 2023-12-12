@@ -3,6 +3,9 @@ import path from 'path';
 import assert from 'assert';
 import { CoConfigFile } from './types/index';
 
+// eslint-disable-next-line @typescript-eslint/no-implied-eval
+const dynamicImport = new Function('specifier', 'return import(specifier)');
+
 function getExport(module: Record<string, unknown>) {
   if (Object.keys(module).length === 1 && (module.default || module.config)) {
     return module.default || module.config;
@@ -25,9 +28,18 @@ async function load(coconfigPath: string): Promise<{ coconfigPath: string; confi
       require('ts-node').register();
     }
 
-    // eslint-disable-next-line import/no-dynamic-require, global-require
-    const module = require(coconfigPath);
-    return { coconfigPath, config: getExport(module) as CoConfigFile };
+    try {
+      // eslint-disable-next-line import/no-dynamic-require, global-require
+      const module = require(coconfigPath);
+      return { coconfigPath, config: getExport(module) as CoConfigFile };
+    } catch (error) {
+      if (path.extname(coconfigPath) === '.ts') {
+        const module = await dynamicImport(coconfigPath.replace('.ts', '.js'));
+        return { coconfigPath, config: getExport(module) as CoConfigFile };
+      }
+      const module = await dynamicImport(coconfigPath);
+      return { coconfigPath, config: getExport(module) as CoConfigFile };
+    }
   } catch (error) {
     throw new Error(`coconfig: Cannot load ${coconfigPath}: ${(error as Error).message}`);
   }
