@@ -69,7 +69,13 @@ __tests__/fake/coconfig.js`,
   '.eslintrc.js': {
     configuration: () => ({
       root: true,
-      extends: 'gasbuddy',
+      extends: [
+        'eslint:recommended',
+        'plugin:@typescript-eslint/recommended',
+        'plugin:prettier/recommended',
+      ],
+      parser: '@typescript-eslint/parser',
+      plugins: ['@typescript-eslint'],
       parserOptions: {
         project: './tsconfig.json',
       },

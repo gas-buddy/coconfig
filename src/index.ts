@@ -48,8 +48,11 @@ export default async function runCoConfig(env: CoConfigEnvironment, coconfig: Co
         gitignore = gitignore || dotgitignore();
         if (!gitignore.ignore(filename)) {
           if (env.modifyGitIgnore) {
-            const rawFilePath = findUp.sync('.gitignore', { cwd: filebase }) || path.resolve(filebase, '.gitignore');
-            let exIgnore = fs.existsSync(rawFilePath) ? fs.readFileSync(rawFilePath || '', 'utf8').trimEnd() : '';
+            const rawFilePath =
+              findUp.sync('.gitignore', { cwd: filebase }) || path.resolve(filebase, '.gitignore');
+            let exIgnore = fs.existsSync(rawFilePath)
+              ? fs.readFileSync(rawFilePath || '', 'utf8').trimEnd()
+              : '';
             if (!exIgnore.includes('# Added by coconfig')) {
               exIgnore = `${exIgnore}\n# Added by coconfig`;
             }
@@ -72,11 +75,13 @@ export default async function runCoConfig(env: CoConfigEnvironment, coconfig: Co
     if (typeof entry === 'string') {
       return promise
         .then(() => resolveFilename(name))
-        .then((filename) => writeIfNecessary({
-          filename,
-          content: entry,
-          encoding: 'utf8',
-        }));
+        .then((filename) =>
+          writeIfNecessary({
+            filename,
+            content: entry,
+            encoding: 'utf8',
+          }),
+        );
     }
     const filenamePromise = resolveFilename(entry.filename || name);
     if ('content' in entry) {
@@ -96,7 +101,8 @@ export default async function runCoConfig(env: CoConfigEnvironment, coconfig: Co
         .then(() => filenamePromise)
         .then(async (filename) => {
           const { configuration } = entry;
-          const jsObject = typeof configuration === 'function' ? (await configuration(env)) : configuration;
+          const jsObject =
+            typeof configuration === 'function' ? await configuration(env) : configuration;
           return writeIfNecessary({
             filename,
             content: JSON.stringify(jsObject, null, '  '),
@@ -106,12 +112,14 @@ export default async function runCoConfig(env: CoConfigEnvironment, coconfig: Co
     }
     return promise
       .then(() => filenamePromise)
-      .then((filename) => writeIfNecessary({
-        filename,
-        content: getFile(env, name, filename),
-        encoding: 'utf8',
-        checkFirst: true,
-      }));
+      .then((filename) =>
+        writeIfNecessary({
+          filename,
+          content: getFile(env, name, filename),
+          encoding: 'utf8',
+          checkFirst: true,
+        }),
+      );
   }, Promise.resolve());
 }
 

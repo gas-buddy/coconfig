@@ -11,10 +11,10 @@ function getExport(module: Record<string, unknown>) {
     return module.default || module.config;
   }
   if (
-    Object.keys(module).length === 2
-    && module.default
-    && module.config
-    && module.default === module.config
+    Object.keys(module).length === 2 &&
+    module.default &&
+    module.config &&
+    module.default === module.config
   ) {
     return module.default;
   }
@@ -28,12 +28,12 @@ function getExport(module: Record<string, unknown>) {
 async function load(coconfigPath: string): Promise<{ coconfigPath: string; config: CoConfigFile }> {
   try {
     if (path.extname(coconfigPath) === '.ts') {
-      // eslint-disable-next-line import/no-extraneous-dependencies, global-require
+      // eslint-disable-next-line global-require, @typescript-eslint/no-var-requires
       require('ts-node').register();
     }
 
     try {
-      // eslint-disable-next-line import/no-dynamic-require, global-require
+      // eslint-disable-next-line global-require, @typescript-eslint/no-var-requires
       const module = require(coconfigPath);
       return { coconfigPath, config: getExport(module) as CoConfigFile };
     } catch (error) {

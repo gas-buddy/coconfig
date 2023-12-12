@@ -29,7 +29,7 @@ export interface CoConfigLiteralEntry extends CoConfigBaseEntry {
 // of calling the function in your coconfig. PLEASE NOTE: This means you should generally
 // not execute top-level code in your coconfig, as it would run on every require of that file.
 export interface CoConfigPassthroughEntry<
-  ConfigType = Record<string, any> | (() => Record<string, any>),
+  ConfigType = Record<string, unknown> | (() => Record<string, unknown>),
 > extends CoConfigBaseEntry {
   configuration: ConfigType;
   // If you want the function to run at "build time" and just render the json,

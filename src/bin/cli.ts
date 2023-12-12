@@ -19,7 +19,10 @@ const argv = minimist(process.argv.slice(2), {
 
 async function run() {
   const pkgInfo = readPkgUp.sync({ cwd: argv.cwd, normalize: argv.normalize });
-  assert(pkgInfo, 'Cannot find package.json. Pass cwd option that points to a directory with a package.json');
+  assert(
+    pkgInfo,
+    'Cannot find package.json. Pass cwd option that points to a directory with a package.json',
+  );
   const { packageJson, path } = pkgInfo;
   const pkgValue = packageJson.config?.coconfig as string | undefined;
   const { coconfigPath, config } = await resolveConfig(path, pkgValue);
