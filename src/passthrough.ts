@@ -32,11 +32,13 @@ function getModulePath(configRef: string) {
 
 export function getFile(env: CoConfigEnvironment, key: string, filename: string) {
   const configRef = configReference(env.coconfigPath, env.packagePath);
-  const isModule = env.packageJson?.type === 'module' || /.m[jt]s/.test(path.extname(filename));
+  const ext = path.extname(filename);
+  const isModule =
+    (env.packageJson?.type === 'module' || /.m[jt]s/.test(ext)) && !/.c[jt]s/.test(ext);
 
   const modulePath = isModule ? configRef : getModulePath(configRef);
 
-  const isTs = /\.[mc]?ts/.test(path.extname(filename));
+  const isTs = /\.[mc]?ts/.test(ext);
 
   const commonCode = `
 const configItem = configModule.default || configModule.config || configModule;
