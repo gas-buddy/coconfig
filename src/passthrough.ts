@@ -69,7 +69,16 @@ ${commonCode}
 export default resolved;\n`;
   }
 
-  if (path.extname(env.coconfigPath) === '.ts') {
+  const isCoconfigTs = /.[cm]?ts/.test(path.extname(env.coconfigPath));
+
+  if (isCoconfigTs && isTs) {
+    return `${header}
+const configModule = require('${modulePath}');
+${commonCode}
+module.exports = resolved;\n`;
+  }
+
+  if (isCoconfigTs) {
     // Target is JS, source is typescript (requires ts-node)
     return `${header}
 require('ts-node').register();
@@ -77,6 +86,7 @@ const configModule = require('${modulePath}');
 ${commonCode}
 module.exports = resolved;\n`;
   }
+
   // Target is JS, source is JS
   return `${header}
 const configModule = require('${modulePath}');
