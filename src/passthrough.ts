@@ -46,7 +46,7 @@ const { configuration } = configItem && configItem['${key}'];
 const resolved = typeof configuration === 'function' ? configuration() : configuration;
 `;
 
-  if (isModule && isTs) {
+  if (isTs) {
     return `${header}
 import cjs from '${modulePath}';
 import * as esmToCjs from '${modulePath}';
@@ -70,13 +70,6 @@ export default resolved;\n`;
   }
 
   const isCoconfigTs = /.[cm]?ts/.test(path.extname(env.coconfigPath));
-
-  if (isCoconfigTs && isTs) {
-    return `${header}
-const configModule = require('${modulePath}');
-${commonCode}
-module.exports = resolved;\n`;
-  }
 
   if (isCoconfigTs) {
     // Target is JS, source is typescript (requires ts-node)
