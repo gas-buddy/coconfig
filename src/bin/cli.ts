@@ -1,23 +1,13 @@
 #!/usr/bin/env node
 // Run with yarn dlx coconfig or npx coconfig
 import assert from 'assert';
-import minimist from 'minimist';
+import minimist, { ParsedArgs } from 'minimist';
 import readPkgUp from 'read-pkg-up';
 import runCoConfig from '../index';
 import { resolveConfig } from '../resolver';
 import type { CoConfigEnvironment } from '../types/index';
 
-const isDev = (process.env.NODE_ENV || 'development') === 'development';
-const argv = minimist(process.argv.slice(2), {
-  default: {
-    // Don't check/modify in non-dev mode
-    gitignore: isDev,
-    'modify-git-ignore': isDev,
-  },
-  boolean: ['normalize', 'gitignore', 'modify-git-ignore'],
-});
-
-async function run() {
+async function run(argv: ParsedArgs) {
   const pkgInfo = readPkgUp.sync({ cwd: argv.cwd, normalize: argv.normalize });
   assert(
     pkgInfo,
@@ -42,8 +32,24 @@ async function run() {
   await runCoConfig(coconfigEnv, finalConfig);
 }
 
-run().catch((error) => {
-  console.error(`coconfig failed ${error.message}\n`);
+try {
+  const isDev = (process.env.NODE_ENV || 'development') === 'development';
+  const argv = minimist(process.argv.slice(2), {
+    default: {
+      // Don't check/modify in non-dev mode
+      gitignore: isDev,
+      'modify-git-ignore': isDev,
+    },
+    boolean: ['normalize', 'gitignore', 'modify-git-ignore'],
+  });
+
+  run(argv).catch((error) => {
+    console.error(`coconfig failed ${error.message}\n`);
+    console.error(error);
+    process.exit(-1);
+  });
+} catch (error) {
+  console.error(`coconfig failed ${(error as Error).message}\n`);
   console.error(error);
   process.exit(-1);
-});
+}
