@@ -42,4 +42,8 @@ async function run() {
   await runCoConfig(coconfigEnv, finalConfig);
 }
 
-run();
+run().catch((error) => {
+  console.error(`coconfig failed ${error.message}\n`);
+  console.error(error);
+  process.exit(-1);
+});
