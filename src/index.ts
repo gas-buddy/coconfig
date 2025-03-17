@@ -72,6 +72,10 @@ export default async function runCoConfig(env: CoConfigEnvironment, coconfig: Co
   }
 
   await configs.reduce((promise, [name, entry]) => {
+    if (name.startsWith('__') && typeof entry !== 'object') {
+      // Cruft, like __esmodule
+      return promise;
+    }
     if (typeof entry === 'string') {
       return promise
         .then(() => resolveFilename(name))
