@@ -48,11 +48,8 @@ const resolved = typeof configuration === 'function' ? configuration() : configu
 
   if (isTs) {
     return `${header}
-import cjs from '${modulePath}';
-import * as esmToCjs from '${modulePath}';
+import * as configModule from '${modulePath}';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const configModule: any = cjs || esmToCjs;
 ${commonCode}
 // eslint-disable-next-line import/no-default-export
 export default resolved;\n`;
@@ -60,10 +57,8 @@ export default resolved;\n`;
 
   if (isModule) {
     return `${header}
-import cjs from '${modulePath}';
-import * as esmToCjs from '${modulePath}';
+import * as configModule from '${modulePath}';
 
-const configModule = cjs || esmToCjs;
 ${commonCode}
 // eslint-disable-next-line import/no-default-export
 export default resolved;\n`;
