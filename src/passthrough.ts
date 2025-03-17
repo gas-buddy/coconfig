@@ -60,7 +60,7 @@ export default resolved;\n`;
 
   if (isModule) {
     return `${header}
-import configModule from '${modulePath}';
+import * as configModule from '${modulePath}';
 
 ${commonCode}
 // eslint-disable-next-line import/no-default-export
